@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yousef Eldib — Odoo Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  :root {
+    --mono: 'Courier New', monospace;
+    --text-primary: #111110;
+    --text-secondary: #6b6b68;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f4f0;
+    --bg-tertiary: #eeede9;
+    --border: rgba(0,0,0,0.12);
+    --border-md: rgba(0,0,0,0.25);
+    --accent: #1D9E75;
+    --accent-bg: #E1F5EE;
+    --accent-border: #9FE1CB;
+    --accent-dark: #0F6E56;
+    --accent-darker: #085041;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-primary: #f0efea;
+      --text-secondary: #9b9b97;
+      --bg-primary: #1a1a18;
+      --bg-secondary: #242422;
+      --bg-tertiary: #2e2e2b;
+      --border: rgba(255,255,255,0.1);
+      --border-md: rgba(255,255,255,0.22);
+      --accent-bg: #0a2e22;
+      --accent-border: #0F6E56;
+      --accent-dark: #5DCAA5;
+      --accent-darker: #9FE1CB;
+    }
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Epilogue', sans-serif;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2.5rem;
+    border-bottom: 0.5px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg-primary);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  .nav-pills { display:flex; gap:6px; }
+
+  .pill {
+    font-size: 12px;
+    font-family: 'Epilogue', sans-serif;
+    padding: 5px 14px;
+    border-radius: 100px;
+    border: 0.5px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .pill:hover { background: var(--bg-secondary); color: var(--text-primary); }
+
+  .avail-chip {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--accent-dark);
+    background: var(--accent-bg);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-family: var(--mono);
+    border: 0.5px solid var(--accent-border);
+  }
+
+  .dot-live {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: blink 1.8s infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero-wrap {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 2rem;
+    padding: 4rem 2.5rem 3rem;
+    border-bottom: 0.5px solid var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .role-line {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .role-line::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 0.5px;
+    background: var(--text-secondary);
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 58px;
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+  }
+  h1 em { font-style: normal; color: var(--accent-dark); }
+
+  .tagline {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: 440px;
+    margin-top: 1.5rem;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    font-family: 'Epilogue', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 22px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn-dark:hover { opacity: 0.75; }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: 'Epilogue', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 22px;
+    border-radius: 100px;
+    border: 0.5px solid var(--border-md);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--bg-secondary); }
+
+  .otw-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-bg);
+    color: var(--accent-darker);
+    border: 0.5px solid var(--accent-border);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 10px 18px;
+    border-radius: 100px;
+    margin-top: 1.2rem;
+  }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .stat-box {
+    background: var(--bg-secondary);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.2rem;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+
+  .stat-lbl {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .stat-box.accent-box {
+    background: var(--accent-bg);
+    border-color: var(--accent-border);
+  }
+  .stat-box.accent-box .stat-num { color: var(--accent-darker); }
+  .stat-box.accent-box .stat-lbl { color: var(--accent-dark); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .left-col { padding: 2.5rem; border-right: 0.5px solid var(--border); }
+  .right-col { padding: 2.5rem; }
+
+  .sec-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sec-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .skill-row:last-child { border-bottom: none; }
+
+  .skill-icon {
+    width: 34px; height: 34px;
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+    border: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+  .skill-icon.hi {
+    background: var(--accent-bg);
+    border-color: var(--accent-border);
+    color: var(--accent-dark);
+  }
+
+  .skill-name { font-size: 14px; font-weight: 500; flex: 1; color: var(--text-primary); }
+
+  .skill-level {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 100px;
+    color: var(--accent-darker);
+    background: var(--accent-bg);
+    border: 0.5px solid var(--accent-border);
+  }
+  .skill-level.mid {
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border-color: var(--border);
+  }
+  .skill-level.learn {
+    color: #633806;
+    background: #FAEEDA;
+    border-color: #FAC775;
+  }
+
+  .proj-card {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .proj-card:last-child { margin-bottom: 0; }
+  .proj-card:hover { border-color: var(--border-md); }
+
+  .proj-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .proj-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    min-width: 24px;
+  }
+
+  .proj-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    flex: 1;
+    color: var(--text-primary);
+  }
+
+  .proj-arrow { font-size: 16px; color: var(--text-secondary); }
+
+  .proj-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 10px;
+    padding-left: 34px;
+  }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 5px; padding-left: 34px; }
+
+  .tg {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 100px;
+    background: var(--bg-secondary);
+    border: 0.5px solid var(--border);
+    color: var(--text-secondary);
+  }
+
+  .exp-block { padding: 1.2rem 0; border-bottom: 0.5px solid var(--border); }
+  .exp-block:last-child { border-bottom: none; }
+
+  .exp-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+
+  .exp-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .exp-date { font-family: var(--mono); font-size: 10px; color: var(--text-secondary); }
+  .exp-org { font-size: 12px; color: var(--text-secondary); }
+
+  .contact-strip {
+    border-top: 0.5px solid var(--border);
+    padding: 2rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s;
+  }
+  .contact-item:hover {
+    border-color: var(--accent-border);
+    background: var(--accent-bg);
+  }
+  .contact-item:hover .ci-icon { color: var(--accent-dark); }
+  .contact-item:hover .ci-label,
+  .contact-item:hover .ci-val { color: var(--accent-darker); }
+
+  .ci-icon { font-size: 20px; color: var(--text-secondary); flex-shrink: 0; }
+  .ci-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); }
+  .ci-val { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+
+  .footer-bar {
+    border-top: 0.5px solid var(--border);
+    padding: 1.2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .footer-copy { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); }
+
+  .footer-otw {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent-dark);
+  }
+
+  .footer-otw-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: blink 1.8s infinite;
+  }
+
+  @media (max-width: 768px) {
+    .top-bar { padding: 1rem 1.2rem; }
+    .nav-pills { display: none; }
+    .hero-wrap { grid-template-columns: 1fr; padding: 2.5rem 1.2rem; }
+    .hero-right { flex-direction: row; }
+    .stat-box { flex: 1; }
+    h1 { font-size: 40px; }
+    .two-col { grid-template-columns: 1fr; }
+    .left-col { border-right: none; border-bottom: 0.5px solid var(--border); padding: 1.5rem 1.2rem; }
+    .right-col { padding: 1.5rem 1.2rem; }
+    .contact-strip { grid-template-columns: 1fr; padding: 1.5rem 1.2rem; }
+    .footer-bar { padding: 1rem 1.2rem; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+  <a class="logo" href="#">YOUSEF ELDIB</a>
+  <nav class="nav-pills">
+    <a class="pill" href="#skills">Skills</a>
+    <a class="pill" href="#projects">Projects</a>
+    <a class="pill" href="#contact">Contact</a>
+  </nav>
+  <div class="avail-chip">
+    <span class="dot-live"></span>#OpenToWork
+  </div>
+</header>
+
+<section class="hero-wrap">
+  <div class="hero-left">
+    <div class="role-line">Odoo Developer · ERP Specialist</div>
+    <h1>Yousef<br><em>Eldib.</em></h1>
+    <p class="tagline">Building robust ERP systems with Odoo, Python, and PostgreSQL. Business Technology student turning academic knowledge into real-world solutions — one module at a time.</p>
+    <div class="cta-row">
+      <a class="btn-dark" href="mailto:yuosefeldib@gmail.com">
+        <i class="ti ti-mail"></i> Let's talk
+      </a>
+      <a class="btn-outline" href="https://www.linkedin.com/in/yuosef-eldib-54762a366" target="_blank" rel="noopener">
+        <i class="ti ti-brand-linkedin"></i> LinkedIn
+      </a>
+    </div>
+    <div class="otw-badge">
+      <i class="ti ti-briefcase"></i> Open to work — internships &amp; ERP roles
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stat-box accent-box">
+      <div class="stat-num">4+</div>
+      <div class="stat-lbl">Odoo modules built &amp; customized</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">3</div>
+      <div class="stat-lbl">Programming languages</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">2025</div>
+      <div class="stat-lbl">Actively building &amp; learning</div>
+    </div>
+  </div>
+</section>
+
+<div class="two-col">
+  <div class="left-col" id="skills">
+    <div class="sec-label">Skills &amp; stack</div>
+
+    <div class="skill-row">
+      <div class="skill-icon hi"><i class="ti ti-brand-python"></i></div>
+      <span class="skill-name">Python</span>
+      <span class="skill-level">Core</span>
+    </div>
+    <div class="skill-row">
+      <div class="skill-icon hi"><i class="ti ti-puzzle"></i></div>
+      <span class="skill-name">Odoo Framework (ORM, Views)</span>
+      <span class="skill-level">Core</span>
+    </div>
+    <div class="skill-row">
+      <div class="skill-icon hi"><i class="ti ti-database"></i></div>
+      <span class="skill-name">PostgreSQL / SQL</span>
+      <span class="skill-level">Core</span>
+    </div>
+    <div class="skill-row">
+      <div class="skill-icon hi"><i class="ti ti-brand-ubuntu"></i></div>
+      <span class="skill-name">Linux / Ubuntu</span>
+      <span class="skill-level">Core</span>
+    </div>
+    <div class="skill-row">
+      <div class="skill-icon"><i class="ti ti-code"></i></div>
+      <span class="skill-name">XML / QWeb reports</span>
+      <span class="skill-level mid">Solid</span>
+    </div>
+    <div class="skill-row">
+      <div class="skill-icon"><i class="ti ti-api"></i></div>
+      <span class="skill-name">REST API integration</span>
+      <span class="skill-level mid">Solid</span>
+    </div>
+    <div class="skill-row">
+      <div class="skill-icon"><i class="ti ti-brand-html5"></i></div>
+      <span class="skill-name">HTML · CSS · JavaScript</span>
+      <span class="skill-level mid">Solid</span>
+    </div>
+    <div class="skill-row">
+      <div class="skill-icon"><i class="ti ti-brand-git"></i></div>
+      <span class="skill-name">Git &amp; GitHub</span>
+      <span class="skill-level mid">Solid</span>
+    </div>
+    <div class="skill-row">
+      <div class="skill-icon"><i class="ti ti-cpu"></i></div>
+      <span class="skill-name">C++ &amp; C#</span>
+      <span class="skill-level learn">Learning</span>
+    </div>
+
+    <div class="sec-label" style="margin-top:2rem">Education</div>
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-role">B.A. Business Technology</div>
+        <div class="exp-date">2023 — Present</div>
+      </div>
+      <div class="exp-org">Canadian International College · Cairo, EG</div>
+    </div>
+  </div>
+
+  <div class="right-col" id="projects">
+    <div class="sec-label">Projects</div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <span class="proj-num">01</span>
+        <span class="proj-title">Odoo Real Estate Module</span>
+        <i class="ti ti-arrow-up-right proj-arrow"></i>
+      </div>
+      <p class="proj-desc">Full custom Odoo module for property and client management — models, views, wizards, QWeb reports, and PostgreSQL queries built from scratch.</p>
+      <div class="tag-row">
+        <span class="tg">Python</span><span class="tg">XML</span><span class="tg">PostgreSQL</span><span class="tg">ORM</span><span class="tg">QWeb</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <span class="proj-num">02</span>
+        <span class="proj-title">Core Module Customization</span>
+        <i class="ti ti-arrow-up-right proj-arrow"></i>
+      </div>
+      <p class="proj-desc">Extended Sales, Inventory, and HR modules with custom business logic, inherited models, computed fields, and modified UI views.</p>
+      <div class="tag-row">
+        <span class="tg">Odoo</span><span class="tg">Sales</span><span class="tg">HR</span><span class="tg">Inventory</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <span class="proj-num">03</span>
+        <span class="proj-title">Business Workflow Automation</span>
+        <i class="ti ti-arrow-up-right proj-arrow"></i>
+      </div>
+      <p class="proj-desc">Python scripts to automate repetitive ERP tasks — reducing manual entry and streamlining data flows across business processes.</p>
+      <div class="tag-row">
+        <span class="tg">Python</span><span class="tg">Scripting</span><span class="tg">Automation</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <span class="proj-num">04</span>
+        <span class="proj-title">External API Integration</span>
+        <i class="ti ti-arrow-up-right proj-arrow"></i>
+      </div>
+      <p class="proj-desc">Researched and prototyped REST API connections between Odoo and third-party services — data sync, authentication, and endpoint mapping.</p>
+      <div class="tag-row">
+        <span class="tg">REST API</span><span class="tg">JSON</span><span class="tg">Integration</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="contact-strip" id="contact">
+  <a class="contact-item" href="mailto:yuosefeldib@gmail.com">
+    <i class="ti ti-mail ci-icon"></i>
+    <div>
+      <div class="ci-label">Email</div>
+      <div class="ci-val">yuosefeldib@gmail.com</div>
+    </div>
+  </a>
+  <a class="contact-item" href="https://www.linkedin.com/in/yuosef-eldib-54762a366" target="_blank" rel="noopener">
+    <i class="ti ti-brand-linkedin ci-icon"></i>
+    <div>
+      <div class="ci-label">LinkedIn</div>
+      <div class="ci-val">yuosef-eldib</div>
+    </div>
+  </a>
+  <a class="contact-item" href="tel:01030848509">
+    <i class="ti ti-phone ci-icon"></i>
+    <div>
+      <div class="ci-label">Phone</div>
+      <div class="ci-val">01030848509</div>
+    </div>
+  </a>
+</div>
+
+<footer class="footer-bar">
+  <span class="footer-copy">© 2025 Yousef Eldib — All rights reserved</span>
+  <div class="footer-otw">
+    <span class="footer-otw-dot"></span> Open to work
+  </div>
+</footer>
+
+</body>
+</html>
